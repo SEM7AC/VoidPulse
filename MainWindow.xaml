@@ -1,0 +1,48 @@
+﻿<Window x:Class="VoidPulse.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VoidPulse"
+        mc:Ignorable="d"
+        Title="VoidPulse" Height="160" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/> <!-- Header -->
+            <RowDefinition Height="*"/>  <!-- Main space -->
+            <RowDefinition Height="60"/><!-- Control area -->
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Text="VoidPulse"/>
+        </StackPanel>
+
+        <!-- Control Area -->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Buttons -->
+                <RowDefinition Height="Auto"/>
+                <!-- Slider -->
+            </Grid.RowDefinitions>
+
+            <!-- Buttons (Row 0) -->
+            <StackPanel Grid.Row="0"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+                <Button Content="⏮" Width="30" Height="30"/>
+                <Button Content="▶" Width="30" Height="30"/>
+                <Button Content="⏭" Width="30" Height="30"/>
+            </StackPanel>
+
+            <!-- Slider (Row 1) -->
+            <Slider Grid.Row="1"
+            Minimum="0"
+            Maximum="100"
+            Margin="4"/>
+        </Grid>
+
+
+    </Grid>
+</Window>
