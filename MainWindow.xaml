@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VoidPulse"
         mc:Ignorable="d"
+        Background="#0F1A2B"
         Title="VoidPulse" Height="160" Width="300">
     <Grid>
         <Grid.RowDefinitions>
@@ -14,9 +15,37 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <TextBlock Text="VoidPulse"/>
+        <StackPanel Grid.Row="0" 
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <TextBlock Text="VoidPulse" 
+                       FontSize="24" 
+                       FontFamily="Showcard Gothic"/>
         </StackPanel>
+
+        
+        <Grid Grid.Row="1">
+            <!-- Visualizer background -->
+            <Grid x:Name="VisualizerLayer">
+                <!-- your bars / waveform / whatever -->
+                <Canvas x:Name="VisualizerCanvas" />
+            </Grid>
+
+            <!-- Text on top -->
+            <StackPanel VerticalAlignment="Top" Margin="10">
+                <TextBlock Text="{Binding TrackTitle}"
+                   Foreground="White"
+                   FontSize="20"
+                   FontWeight="Bold"/>
+
+                <TextBlock Text="{Binding Artist}"
+                   Foreground="White"
+                   FontSize="14"
+                   Opacity="0.8"/>
+            </StackPanel>
+        </Grid>
+
+
 
         <!-- Control Area -->
         <Grid Grid.Row="2">
@@ -28,19 +57,34 @@
             </Grid.RowDefinitions>
 
             <!-- Buttons (Row 0) -->
-            <StackPanel Grid.Row="0"
+            <StackPanel Grid.Row="0" Margin="0"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
-                <Button Content="⏮" Width="30" Height="30"/>
-                <Button Content="▶" Width="30" Height="30"/>
-                <Button Content="⏭" Width="30" Height="30"/>
+                <Button Content="⏮" Width="30" Height="30"
+                        Foreground="#A8C7E6" 
+                        BorderBrush="#A8C7E6"
+                        Background="#0F1A2B"
+                        Click="Rwd_Button_Click"/>
+                
+                <Button Content="▶" Width="30" Height="30"
+                        Foreground="#A8C7E6" 
+                        BorderBrush="#A8C7E6"
+                        Background="#0F1A2B"
+                        Click="Play_Button_Click"/>
+                
+                <Button Content="⏭" Width="30" Height="30"
+                        Foreground="#A8C7E6" 
+                        BorderBrush="#A8C7E6"
+                        Background="#0F1A2B"
+                        Click="Fwd_Button_Click"/>
             </StackPanel>
 
             <!-- Slider (Row 1) -->
             <Slider Grid.Row="1"
             Minimum="0"
             Maximum="100"
-            Margin="4"/>
+            Margin="4"
+            />
         </Grid>
 
 
