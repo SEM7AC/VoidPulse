@@ -1,6 +1,4 @@
-﻿using Microsoft.Identity.Client.Extensions.Msal;
-using System.Numerics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 

@@ -14,7 +14,7 @@ internal class PlayerHelper
     private string? _currentTrack;
 
     public bool IsStopped => _event == null || _reader == null;
-    
+
     public PlayerHelper(StorageHelper storage)
         {
         _storage = storage;
@@ -132,5 +132,5 @@ internal class PlayerHelper
         KillReader();
         KillStream();
         }
-        
+
     }
