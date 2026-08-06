@@ -6,7 +6,53 @@
         xmlns:local="clr-namespace:VoidPulse"
         mc:Ignorable="d"
         Background="#0F1A2B"
-        Title="VoidPulse" Height="160" Width="300">
+        Title="VoidPulse" Height="200" Width="300">
+
+    <Window.Resources>
+
+        <!-- Your slider style goes HERE -->
+        <Style TargetType="Slider" x:Key="PulseSlider">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Slider">
+                        <Grid Margin="10,10,10,0">
+                            <!-- Background track -->
+                            <Border Height="4"
+                            Background="#23344D"
+                            CornerRadius="2"/>
+
+                            <!-- Progress track -->
+                            <Border Height="4"
+                            Background="#A8C7E6"
+                            CornerRadius="2"
+                            HorizontalAlignment="Left"
+                            Width="{TemplateBinding Value}"/>
+
+                            <!-- Thumb -->
+                            <Thumb Width="12" Height="12">
+                                <Thumb.Template>
+                                    <ControlTemplate TargetType="Thumb">
+                                        <Border Background="#A8C7E6"
+                                        BorderBrush="#0F1A2B"
+                                        BorderThickness="2"
+                                        CornerRadius="6"/>
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+    </Window.Resources>
+
+
+
+
+
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/> <!-- Header -->
@@ -20,7 +66,14 @@
                     HorizontalAlignment="Center">
             <TextBlock Text="VoidPulse" 
                        FontSize="24" 
-                       FontFamily="Showcard Gothic"/>
+                       FontFamily="Showcard Gothic">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="#4FFFEA"
+                              BlurRadius="12"
+                              ShadowDepth="0"
+                              Opacity="0.6"/>
+                </TextBlock.Effect>
+            </TextBlock>
         </StackPanel>
 
         
@@ -57,33 +110,45 @@
             </Grid.RowDefinitions>
 
             <!-- Buttons (Row 0) -->
-            <StackPanel Grid.Row="0" Margin="0"
+            <StackPanel Grid.Row="0" Margin="0,8,0,0"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
                 <Button Content="⏮" Width="30" Height="30"
                         Foreground="#A8C7E6" 
                         BorderBrush="#A8C7E6"
                         Background="#0F1A2B"
-                        Click="Rwd_Button_Click"/>
-                
-                <Button Content="▶" Width="30" Height="30"
+                        Click="Prev_Button_Click"
+                        Margin="0,0,5,0"/>
+
+                <Button Content="⏹" Width="30" Height="30"
                         Foreground="#A8C7E6" 
                         BorderBrush="#A8C7E6"
                         Background="#0F1A2B"
-                        Click="Play_Button_Click"/>
+                        Click="Stop_Button_Click"
+                        Margin="0,0,5,0"/>
+
+                <Button Content="⏯" Width="30" Height="30"
+                        Foreground="#A8C7E6" 
+                        BorderBrush="#A8C7E6"
+                        Background="#0F1A2B"
+                        Click="Play_Button_Click"
+                        Margin="0,0,5,0"
+                        x:Name="PlayButton"/>
                 
                 <Button Content="⏭" Width="30" Height="30"
                         Foreground="#A8C7E6" 
                         BorderBrush="#A8C7E6"
                         Background="#0F1A2B"
-                        Click="Fwd_Button_Click"/>
+                        Click="Fwd_Button_Click"
+                        Margin="0,0,5,0"/>
             </StackPanel>
 
             <!-- Slider (Row 1) -->
             <Slider Grid.Row="1"
+            Style="{StaticResource PulseSlider}"
             Minimum="0"
             Maximum="100"
-            Margin="4"
+            Margin="0"
             />
         </Grid>
 
