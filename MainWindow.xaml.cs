@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using VoidPulse.Audio;
 
 namespace VoidPulse;
 
@@ -8,7 +10,13 @@ public partial class MainWindow : Window
     {
     private StorageHelper _storage;
     private PlayerHelper _player;
+    private TrackLoader _trackLoader;
     private readonly Random _rand = new Random();
+
+    private readonly Visualizer.VisualizerEngine _engine = new();
+    private readonly Visualizer.VisualizerRenderer _renderer = new();
+
+
     private bool _isPlaying = false;
 
     public MainWindow()
@@ -16,6 +24,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         _storage = new StorageHelper();
         _player = new PlayerHelper(_storage);
+        _trackLoader = new TrackLoader(_storage, _player);
 
         Loaded += MainWindow_Loaded;
         Loaded += (s, e) => StartVisualizer();
@@ -23,51 +32,47 @@ public partial class MainWindow : Window
 
     private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-        await _storage.LoadTracksAsync();
-
-        string track = _storage.GetRandomTrack();
-        var stream = await _storage.DownloadTrackAsync(track);
-        _player.LoadTrack(stream);
-        _player.SetCurrentTrack(track);
-
-
+        await _trackLoader.LoadRandomTrackAsync();
         }
+
+    // WINDOW CONTROLS ----------------------------------------------------
+    private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+        if (e.LeftButton == MouseButtonState.Pressed)
+            DragMove();
+        }
+
+    private void Close_Click(object sender, RoutedEventArgs e)
+        {
+        Close();
+        }
+
+    private void Minimize_Click(object sender, RoutedEventArgs e)
+        {
+        WindowState = WindowState.Minimized;
+        }
+    //---------------------------------------------------------------------
+
 
     private void StartVisualizer()
         {
         CompositionTarget.Rendering += (s, e) =>
         {
-            VisualizerCanvas.Children.Clear();
-
             int barCount = 40;
-            double barWidth = VisualizerCanvas.ActualWidth / barCount;
             double height = VisualizerCanvas.ActualHeight;
 
-            for (int i = 0; i < barCount; i++)
-                {
-                double barHeight = _rand.NextDouble() * height;
-
-                var rect = new System.Windows.Shapes.Rectangle
-                    {
-                    Width = barWidth - 2,
-                    Height = barHeight,
-                    Fill = new SolidColorBrush(Color.FromRgb(0x2A, 0x7F, 0x6A)),
-                    Opacity = 0.85
-                    };
-
-                Canvas.SetLeft(rect, i * barWidth);
-                Canvas.SetTop(rect, height - barHeight);
-
-                VisualizerCanvas.Children.Add(rect);
-                }
+            var bars = _engine.GenerateBars(barCount, height);
+            _renderer.Render(VisualizerCanvas, bars);
         };
         }
 
+
     // BUTTON GROUP ------------------------------------------------
 
-    private void Play_Button_Click(object sender, RoutedEventArgs e)
+    private void Play_Button_Click(object? sender, RoutedEventArgs e)
         {
-        var btn = sender as Button;
+        if (sender is not Button btn)
+            return;
 
         if (!_isPlaying)
             {
@@ -87,17 +92,17 @@ public partial class MainWindow : Window
             }
         }
 
-    private async void Fwd_Button_Click(object sender, RoutedEventArgs e)
+    private async void Fwd_Button_Click(object? sender, RoutedEventArgs e)
         {
         await _player.NextTrack(_isPlaying);
         }
 
-    private async void Prev_Button_Click(object sender, RoutedEventArgs e)
+    private async void Prev_Button_Click(object? sender, RoutedEventArgs e)
         {
         await _player.PrevTrack(_isPlaying);
         }
 
-    private void Stop_Button_Click(object sender, RoutedEventArgs e)
+    private void Stop_Button_Click(object? sender, RoutedEventArgs e)
         {
         _player.KillEvent();
         _player.KillReader();

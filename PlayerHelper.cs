@@ -3,7 +3,7 @@ using System.IO;
 
 namespace VoidPulse;
 
-internal class PlayerHelper
+public class PlayerHelper
     {
     private WaveOutEvent? _event;
     private Mp3FileReader? _reader;

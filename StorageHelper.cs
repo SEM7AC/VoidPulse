@@ -8,7 +8,7 @@ using System.Text;
 
 namespace VoidPulse;
 
-internal class StorageHelper
+public class StorageHelper
     {
 
     private BlobContainerClient _container;

@@ -1,157 +1,126 @@
 ﻿<Window x:Class="VoidPulse.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VoidPulse"
-        mc:Ignorable="d"
-        Background="#0F1A2B"
-        Title="VoidPulse" Height="200" Width="300">
+        Background="Transparent"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Height="260" Width="350">
 
     <Window.Resources>
 
-        <!-- Your slider style goes HERE -->
-        <Style TargetType="Slider" x:Key="PulseSlider">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Slider">
-                        <Grid Margin="10,10,10,0">
-                            <!-- Background track -->
-                            <Border Height="4"
-                            Background="#23344D"
-                            CornerRadius="2"/>
-
-                            <!-- Progress track -->
-                            <Border Height="4"
-                            Background="#A8C7E6"
-                            CornerRadius="2"
-                            HorizontalAlignment="Left"
-                            Width="{TemplateBinding Value}"/>
-
-                            <!-- Thumb -->
-                            <Thumb Width="12" Height="12">
-                                <Thumb.Template>
-                                    <ControlTemplate TargetType="Thumb">
-                                        <Border Background="#A8C7E6"
-                                        BorderBrush="#0F1A2B"
-                                        BorderThickness="2"
-                                        CornerRadius="6"/>
-                                    </ControlTemplate>
-                                </Thumb.Template>
-                            </Thumb>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
+       
 
     </Window.Resources>
 
+    <Border Background="#0F1A2B">
 
-
-
-
-
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/> <!-- Header -->
-            <RowDefinition Height="*"/>  <!-- Main space -->
-            <RowDefinition Height="60"/><!-- Control area -->
-        </Grid.RowDefinitions>
-
-        <!-- Header -->
-        <StackPanel Grid.Row="0" 
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Center">
-            <TextBlock Text="VoidPulse" 
-                       FontSize="24" 
-                       FontFamily="Showcard Gothic">
-                <TextBlock.Effect>
-                    <DropShadowEffect Color="#4FFFEA"
-                              BlurRadius="12"
-                              ShadowDepth="0"
-                              Opacity="0.6"/>
-                </TextBlock.Effect>
-            </TextBlock>
-        </StackPanel>
-
-        
-        <Grid Grid.Row="1">
-            <!-- Visualizer background -->
-            <Grid x:Name="VisualizerLayer">
-                <!-- your bars / waveform / whatever -->
-                <Canvas x:Name="VisualizerCanvas" />
-            </Grid>
-
-            <!-- Text on top -->
-            <StackPanel VerticalAlignment="Top" Margin="10">
-                <TextBlock Text="{Binding TrackTitle}"
-                   Foreground="White"
-                   FontSize="20"
-                   FontWeight="Bold"/>
-
-                <TextBlock Text="{Binding Artist}"
-                   Foreground="White"
-                   FontSize="14"
-                   Opacity="0.8"/>
-            </StackPanel>
-        </Grid>
-
-
-
-        <!-- Control Area -->
-        <Grid Grid.Row="2">
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <!-- Buttons -->
-                <RowDefinition Height="Auto"/>
-                <!-- Slider -->
+                <RowDefinition Height="32"/>
+                <!-- DRAG BAR -->
+                <RowDefinition Height="40"/>
+                <!-- TITLE -->
+                <RowDefinition Height="120"/>
+                <!-- VISUALIZER -->
+                <RowDefinition Height="100"/>
+                <!-- CONTROLS -->
             </Grid.RowDefinitions>
 
-            <!-- Buttons (Row 0) -->
-            <StackPanel Grid.Row="0" Margin="0,8,0,0"
-                Orientation="Horizontal"
-                HorizontalAlignment="Center">
-                <Button Content="⏮" Width="30" Height="30"
-                        Foreground="#A8C7E6" 
-                        BorderBrush="#A8C7E6"
-                        Background="#0F1A2B"
-                        Click="Prev_Button_Click"
-                        Margin="0,0,5,0"/>
+            <!-- DRAG BAR -->
+            <Grid Grid.Row="0"
+                  Background="Transparent"
+                  MouseLeftButtonDown="Window_MouseDown">
 
-                <Button Content="⏹" Width="30" Height="30"
-                        Foreground="#A8C7E6" 
-                        BorderBrush="#A8C7E6"
-                        Background="#0F1A2B"
-                        Click="Stop_Button_Click"
-                        Margin="0,0,5,0"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                <Button Content="⏯" Width="30" Height="30"
-                        Foreground="#A8C7E6" 
-                        BorderBrush="#A8C7E6"
-                        Background="#0F1A2B"
-                        Click="Play_Button_Click"
-                        Margin="0,0,5,0"
-                        x:Name="PlayButton"/>
-                
-                <Button Content="⏭" Width="30" Height="30"
-                        Foreground="#A8C7E6" 
-                        BorderBrush="#A8C7E6"
-                        Background="#0F1A2B"
-                        Click="Fwd_Button_Click"
-                        Margin="0,0,5,0"/>
-            </StackPanel>
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Margin="0,0,5,0">
 
-            <!-- Slider (Row 1) -->
-            <Slider Grid.Row="1"
-            Style="{StaticResource PulseSlider}"
-            Minimum="0"
-            Maximum="100"
-            Margin="0"
-            />
+                    <Button Content="_"
+                            Width="22" Height="22"
+                            Click="Minimize_Click"
+                            Style="{StaticResource WindowButtonStyle}"/>
+
+                    <Button Content="X"
+                            Width="22" Height="22"
+                            Click="Close_Click"
+                            Style="{StaticResource WindowButtonStyle}"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- TITLE -->
+            <TextBlock Grid.Row="1"
+                       Text="VoidPulse"
+                       FontSize="24"
+                       FontFamily="Showcard Gothic"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="#4FFFEA"
+                                      BlurRadius="12"
+                                      ShadowDepth="0"
+                                      Opacity="0.6"/>
+                </TextBlock.Effect>
+            </TextBlock>
+
+            <!-- VISUALIZER -->
+            <Border Grid.Row="2"
+                    Background="#0F1A2B"
+                    Height="120"
+                    ClipToBounds="True"
+                    Margin="0,0,0,6">
+                <Canvas x:Name="VisualizerCanvas"
+                        Height="120"/>
+            </Border>
+
+            <!-- CONTROLS -->
+            <Grid Grid.Row="3" VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Buttons -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Slider -->
+                </Grid.RowDefinitions>
+
+                <!-- BUTTONS -->
+                <StackPanel Grid.Row="0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="0,8,0,8">
+
+                    <Button Content="⏮" Width="36" Height="36" Margin="3,0"
+                            Style="{StaticResource PulseButtonStyle}"
+                            Click="Prev_Button_Click"/>
+
+                    <Button Content="⏹" Width="36" Height="36" Margin="3,0"
+                            Style="{StaticResource PulseButtonStyle}"
+                            Click="Stop_Button_Click"/>
+
+                    <Button Content="⏯" Width="36" Height="36" Margin="3,0"
+                            Style="{StaticResource PulseButtonStyle}"
+                            Click="Play_Button_Click"
+                            x:Name="PlayButton"/>
+
+                    <Button Content="⏭" Width="36" Height="36" Margin="3,0"
+                            Style="{StaticResource PulseButtonStyle}"
+                            Click="Fwd_Button_Click"/>
+                </StackPanel>
+
+                <!-- SLIDER -->
+                <Slider Grid.Row="1"
+                        Style="{StaticResource PulseSlider}"
+                        Minimum="0"
+                        Maximum="100"
+                        Margin="10,0,10,0"
+                        VerticalAlignment="Top"/>
+            </Grid>
+
         </Grid>
 
-
-    </Grid>
+    </Border>
 </Window>
